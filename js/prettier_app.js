@@ -7,28 +7,14 @@
     const TOTAL_DAYS = 12;
 
     var model = {
-        students: [
-            {
-                name: 'Slappy the Frog',
-                attendance: []
-            },
-            {
-                name: 'Lilly the Lizard',
-                attendance: []
-            },
-            {
-                name: 'Paulrus the Walrus',
-                attendance: []
-            },
-            {
-                name: 'Gregory the Goat',
-                attendance: []
-            },
-            {
-                name: 'Adam the Anaconda',
-                attendance: []
-            }
-        ],
+        // Attendance register
+        attendance: {
+            'Slappy the Frog': [],
+            'Lilly the Lizard': [],
+            'Paulrus the Walrus': [],
+            'Gregory the Goat': [],
+            'Adam the Anaconda': []
+        },
 
         getRandom: function() {
             // Generate random true or false values
@@ -40,39 +26,51 @@
             // with true or false values
             console.log('    Creating attendance records...');
             // console.log(this);
-            this.students.forEach(function(student) {
+
+            for (var student in this.attendance) {
+                // console.log(student);
                 for (var day = 0; day < TOTAL_DAYS; day++){
-                    student.attendance.push(model.getRandom());
+                    this.attendance[student].push(model.getRandom());
                 }
-            });
+            }
+
+            // this.students.forEach(function(student) {
+            //     for (var day = 0; day < TOTAL_DAYS; day++){
+            //         student.attendance.push(model.getRandom());
+            //     }
+            // });
         },
 
         init: function() {
             console.log('Initializing model...');
 
-            if (localStorage.getItem('studentData') !== null) {
+            if (localStorage.getItem('attendanceData') !== null) {
                 console.log('    Loading attendance records from localStorage...');
-                this.students = JSON.parse(localStorage.getItem('studentData'));
+                this.attendance = JSON.parse(localStorage.getItem('attendanceData'));
             }
             else {
                 this.initializeAttendance();
-                this.isInitialized = true;
             }
 
             console.log('Model initialized');
             console.log(this);
         },
 
+        getAttendance: function(name) {
+            return this.students[name];
+        },
+
         save: function() {
             // Save model to localStorage
-            localStorage.setItem("studentData", JSON.stringify(this.students));
+            console.log("Saving data to localStorage...");
+            localStorage.setItem("attendanceData", JSON.stringify(this.attendance));
         }
     };
 
     var octopus = {
         init: function() {
             model.init();
-            model.save();
+            //model.save(); // This is just for tseting
             view.init();
         },
 
