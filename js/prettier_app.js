@@ -33,12 +33,6 @@
                     this.attendance[student].push(model.getRandom());
                 }
             }
-
-            // this.students.forEach(function(student) {
-            //     for (var day = 0; day < TOTAL_DAYS; day++){
-            //         student.attendance.push(model.getRandom());
-            //     }
-            // });
         },
 
         init: function() {
@@ -56,30 +50,46 @@
             console.log(this);
         },
 
-        getAttendance: function(name) {
-            return this.students[name];
-        },
-
         save: function() {
             // Save model to localStorage
-            console.log("Saving data to localStorage...");
-            localStorage.setItem("attendanceData", JSON.stringify(this.attendance));
+            console.log('Saving data to localStorage...');
+            localStorage.setItem('attendanceData', JSON.stringify(this.attendance));
         }
     };
 
     var octopus = {
         init: function() {
             model.init();
-            //model.save(); // This is just for tseting
-            view.init();
+            // model.save(); // This is just for tseting
+            viewHeader.init();
         },
 
-
+        getAttendance: function(name) {
+            // Get the attendance of student, 'name'.
+            return model.attendance[name];
+        },
     };
 
-    var view = {
+    var viewHeader = {
         init: function() {
-            console.log("Do something!");
+            this.render();
+        },
+
+        render: function() {
+            // Render the header
+            var trHeader = $('#tr-header');
+            var headerContents = '';
+
+            headerContents += '<th class="name-col">Student Name</th>';
+            for (var i = 0; i < TOTAL_DAYS; i++) {
+                headerContents += '<th>';
+                headerContents += i + 1;
+                headerContents += '</th>';
+            }
+            headerContents += '<th class="missed-col">Days Missed-col</th>';
+            console.log(headerContents);
+
+            trHeader.html(headerContents);
         }
     };
 
