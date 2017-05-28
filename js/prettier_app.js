@@ -62,6 +62,7 @@
             model.init();
             // model.save(); // This is just for tseting
             viewHeader.init();
+            viewBody.render(model.attendance);
         },
 
         getAttendance: function(name) {
@@ -78,18 +79,64 @@
         render: function() {
             // Render the header
             var trHeader = $('#tr-header');
-            var headerContents = '';
+            var headerContents = '<th class="name-col">Student Name</th>\n';
 
-            headerContents += '<th class="name-col">Student Name</th>';
             for (var i = 0; i < TOTAL_DAYS; i++) {
                 headerContents += '<th>';
                 headerContents += i + 1;
-                headerContents += '</th>';
+                headerContents += '</th>\n';
             }
-            headerContents += '<th class="missed-col">Days Missed-col</th>';
-            console.log(headerContents);
+            headerContents += '<th class="missed-col">Days Missed-col</th>\n';
+            // console.log(headerContents);
 
             trHeader.html(headerContents);
+        }
+    };
+
+    var viewBody = {
+        // Render table body
+        // init: function() {
+        //     this.render();
+        // },
+
+        render: function(attendance){
+            var tableBody = $('#table-body');
+            var contents = '';
+            var checked = '';
+            var daysMissed = 0;
+
+            for (var name in attendance) {
+                daysMissed = 0;
+                contents += '<tr class="student">\n';
+                contents += '<td class="name-col">';
+                contents += name;
+                contents += '</td>\n';
+
+                for (var day = 0; day < TOTAL_DAYS; day++){
+                    // Add checkboxes
+                    contents += '<td class="attend-col"><input type="checkbox"';
+
+                    if (attendance[name][day]){
+                        // Day present.
+                        checked = ' checked';
+                    }
+                    else{
+                        // Day absent.
+                        checked = '';
+                        daysMissed++;
+                    }
+                    contents += checked;
+                    contents += '></td>';
+                }
+
+                contents += '<td class="missed-col">';
+                contents += daysMissed;
+                contents += '</td>\n';
+                contents += '</tr>\n';
+            }
+
+            console.log(contents);
+            tableBody.html(contents);
         }
     };
 
