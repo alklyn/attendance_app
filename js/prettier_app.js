@@ -69,6 +69,21 @@
             // Get the attendance of student, 'name'.
             return model.attendance[name];
         },
+
+        setItem: function(itemID){
+            // Set the attendance value of a perticular day/checkbox.
+
+            // Extract the name & day from the checkbox's id
+            var itemArr = itemID.split('_');
+            var name = itemArr[0].replace(/-/g, ' ');
+            var day = itemArr[1];
+            console.log('name = ' + name);
+            console.log('day = ' + day);
+
+            model.attendance[name][day] = !model.attendance[name][day];
+            model.save();
+            location.reload();
+        }
     };
 
     var viewHeader = {
@@ -116,7 +131,7 @@
                 for (var day = 0; day < TOTAL_DAYS; day++){
                     // Add checkboxes
                     contents += '<td class="attend-col"><input type="checkbox"';
-                    var id = 'id ="' + name.replace(/ /g, '-') + day + '"';
+                    var id = 'id ="' + name.replace(/ /g, '-') + '_' + day + '"';
                     contents += id;
 
                     if (attendance[name][day]){
@@ -148,13 +163,13 @@
             for (var name in attendance) {
                 // console.log(student);
                 for (var day = 0; day < TOTAL_DAYS; day++){
-                    var id = name.replace(/ /g, '-') + day;
-                    var element = $('#' + id);
-                    console.log('Binding event listener to: ' + id);
+                    var id = name.replace(/ /g, '-') + '_' + day;
+                    var elem = $('#' + id);
+                    // console.log('Binding event listener to: ' + id);
+                    // console.log(element);
 
-                    element.on("click", function() {
-                        // attendance[name][day] = element.attr('checked');
-                        console.log(id + ' clicked.');
+                    elem.click(function(elem) {
+                        octopus.setItem(elem.target.id);
                     });
                 }
             }
