@@ -153,7 +153,7 @@
                 contents += '</tr>\n';
             }
 
-            console.log(contents);
+            // console.log(contents);
             tableBody.html(contents);
         },
 
