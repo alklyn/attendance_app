@@ -62,7 +62,7 @@
             model.init();
             // model.save(); // This is just for tseting
             viewHeader.init();
-            viewBody.render(model.attendance);
+            viewBody.init(model.attendance);
         },
 
         getAttendance: function(name) {
@@ -95,9 +95,10 @@
 
     var viewBody = {
         // Render table body
-        // init: function() {
-        //     this.render();
-        // },
+        init: function(attendance) {
+            this.render(attendance);
+            this.bindEventListener(attendance);
+        },
 
         render: function(attendance){
             var tableBody = $('#table-body');
@@ -115,6 +116,8 @@
                 for (var day = 0; day < TOTAL_DAYS; day++){
                     // Add checkboxes
                     contents += '<td class="attend-col"><input type="checkbox"';
+                    var id = 'id ="' + name.replace(/ /g, '-') + day + '"';
+                    contents += id;
 
                     if (attendance[name][day]){
                         // Day present.
@@ -137,7 +140,26 @@
 
             console.log(contents);
             tableBody.html(contents);
+        },
+
+        bindEventListener: function(attendance) {
+            // Bind event listener to each checkbox
+            console.log('\nBinding event listeners...');
+            for (var name in attendance) {
+                // console.log(student);
+                for (var day = 0; day < TOTAL_DAYS; day++){
+                    var id = name.replace(/ /g, '-') + day;
+                    var element = $('#' + id);
+                    console.log('Binding event listener to: ' + id);
+
+                    element.on("click", function() {
+                        // attendance[name][day] = element.attr('checked');
+                        console.log(id + ' clicked.');
+                    });
+                }
+            }
         }
+
     };
 
     octopus.init();
